@@ -47,13 +47,43 @@ on conflict (username) do update
       barangay = excluded.barangay, full_name = excluded.full_name,
       position = excluded.position, status = excluded.status;
 
--- ── Evacuation centres (marker: notes = 'SEED demo') ────────────────────────
-delete from public.evacuation_centers where notes = 'SEED demo';
-insert into public.evacuation_centers (name, barangay, facility_type, capacity, occupancy, status, manager, contact, lat, lng, notes) values
-  ('Cabuyao Central School',     'Poblacion Uno', 'School',        800, 120, 'open',    'M. Santos',   '0917-100-2001', 14.280444, 121.124802, 'SEED demo'),
-  ('Marinig Covered Court',      'Marinig',       'Covered Court', 500, 310, 'open',    'R. Bautista', '0917-100-2002', 14.271527, 121.149687, 'SEED demo'),
-  ('Mamatid Elementary School',  'Mamatid',       'School',        650, 645, 'full',    'L. Cruz',     '0917-100-2003', 14.239543, 121.156229, 'SEED demo'),
-  ('Banlic Barangay Hall',       'Banlic',        'Barangay Hall', 300,  40, 'open',    'A. Reyes',    '0917-100-2004', 14.232642, 121.141187, 'SEED demo');
+-- ── Evacuation centres — OFFICIAL Cabuyao City list (marker: notes='OFFICIAL')
+--    Coordinates resolved from OpenStreetMap / Nominatim (the schools that
+--    matched), else anchored to the barangay's validated interior point.
+delete from public.evacuation_centers where notes in ('SEED demo', 'OFFICIAL');
+insert into public.evacuation_centers (name, barangay, facility_type, capacity, occupancy, status, lat, lng, notes) values
+  -- National / Integrated High Schools
+  ('Bigaa Integrated National High School',        'Bigaa',          'School', 900, 0, 'open', 14.2912976, 121.1293856, 'OFFICIAL'),
+  ('Cabuyao Integrated National High School',      'Poblacion Tres', 'School', 1000,0, 'open', 14.2752801, 121.1266780, 'OFFICIAL'),
+  ('Casile Integrated National High School',       'Casile',         'School', 600, 0, 'open', 14.1700660, 121.0194642, 'OFFICIAL'),
+  ('Gulod National High School',                   'Gulod',          'School', 800, 0, 'open', 14.2573295, 121.1652211, 'OFFICIAL'),
+  ('Mamatid National High School',                 'Mamatid',        'School', 900, 0, 'open', 14.2362765, 121.1518221, 'OFFICIAL'),
+  ('Pulo National High School',                    'Pulo',           'School', 850, 0, 'open', 14.2462946, 121.1348910, 'OFFICIAL'),
+  ('Pulo National High School – Diezmo Annex',     'Diezmo',         'School', 500, 0, 'open', 14.2325000, 121.0995000, 'OFFICIAL'),
+  ('Southville National High School',              'Niugan',         'School', 800, 0, 'open', 14.2670000, 121.1370000, 'OFFICIAL'),
+  ('Marinig National High School',                 'Marinig',        'School', 850, 0, 'open', 14.2738198, 121.1510241, 'OFFICIAL'),
+  -- Elementary / Central Schools
+  ('Baclaran Elementary School',                   'Baclaran',       'School', 500, 0, 'open', 14.2447546, 121.1696297, 'OFFICIAL'),
+  ('Banay-Banay Elementary School',                'Banay-Banay',    'School', 500, 0, 'open', 14.2536826, 121.1310533, 'OFFICIAL'),
+  ('Banlic Elementary School',                     'Banlic',         'School', 500, 0, 'open', 14.2315569, 121.1371432, 'OFFICIAL'),
+  ('Bigaa Elementary School',                      'Bigaa',          'School', 550, 0, 'open', 14.2911154, 121.1284078, 'OFFICIAL'),
+  ('Butong Elementary School',                     'Butong',         'School', 500, 0, 'open', 14.2904148, 121.1372548, 'OFFICIAL'),
+  ('Cabuyao Central School',                       'Poblacion Dos',  'School', 800, 0, 'open', 14.2770380, 121.1268281, 'OFFICIAL'),
+  ('Casile Elementary School',                     'Casile',         'School', 400, 0, 'open', 14.1694699, 121.0193815, 'OFFICIAL'),
+  ('Diezmo Elementary School',                     'Diezmo',         'School', 450, 0, 'open', 14.2340000, 121.1010000, 'OFFICIAL'),
+  ('Guinting Elementary School',                   'Casile',         'School', 350, 0, 'open', 14.1632959, 121.0193549, 'OFFICIAL'),
+  ('Gulod Elementary School',                      'Gulod',          'School', 500, 0, 'open', 14.2580351, 121.1649708, 'OFFICIAL'),
+  ('Mamatid Elementary School',                    'Mamatid',        'School', 650, 0, 'open', 14.2346811, 121.1587128, 'OFFICIAL'),
+  ('North Marinig Elementary School',              'Marinig',        'School', 500, 0, 'open', 14.2790139, 121.1461294, 'OFFICIAL'),
+  ('Marinig South Elementary School',              'Marinig',        'School', 500, 0, 'open', 14.2706028, 121.1575482, 'OFFICIAL'),
+  ('Niugan Elementary School',                     'Niugan',         'School', 500, 0, 'open', 14.2629316, 121.1283561, 'OFFICIAL'),
+  ('Pittland Elementary School',                   'Pittland',       'School', 450, 0, 'open', 14.2316822, 121.0916526, 'OFFICIAL'),
+  ('Pulo Elementary School',                       'Pulo',           'School', 550, 0, 'open', 14.2425110, 121.1322332, 'OFFICIAL'),
+  ('Sala Elementary School',                       'Sala',           'School', 550, 0, 'open', 14.2714636, 121.1262114, 'OFFICIAL'),
+  ('San Isidro Elementary School',                 'San Isidro',     'School', 500, 0, 'open', 14.2407630, 121.1396845, 'OFFICIAL'),
+  ('Southville Elementary School',                 'Marinig',        'School', 500, 0, 'open', 14.2699077, 121.1434775, 'OFFICIAL'),
+  -- Largest — PAGCOR Multi-Purpose Evacuation Center (near CDRRMO Command Center, Banay-Banay)
+  ('PAGCOR Multi-Purpose Evacuation Center',       'Banay-Banay',    'Evacuation Center', 1500, 0, 'open', 14.2540000, 121.1315000, 'OFFICIAL');
 
 -- ── Alerts (marker: issued_by = 'SEED') ─────────────────────────────────────
 delete from public.alerts where issued_by = 'SEED';
